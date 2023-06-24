@@ -1,12 +1,8 @@
+import { DefaultTheme } from 'styled-components';
 import { defaultPalette } from './colors';
 import typography from './typography';
 
-interface Theme {
-  typography: typeof typography;
-  color: Record<string, string>;
-}
-
-const theme: Theme = {
+const theme: DefaultTheme = {
   typography,
   color: defaultPalette,
 };

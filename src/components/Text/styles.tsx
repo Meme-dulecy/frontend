@@ -1,9 +1,10 @@
-import styled from 'styled-components';
-import { type Typography, typo } from '../../utils/style';
+import styled, { DefaultTheme } from 'styled-components';
+import { typo, themeColor } from '../../utils/style';
 
 export interface TextStyleProps {
-  size: Typography;
+  size: keyof DefaultTheme['typography'];
   type?: keyof typeof typeMap;
+  color?: keyof DefaultTheme['color'];
 };
 
 export default styled.span<TextStyleProps>`
@@ -21,7 +22,9 @@ export default styled.span<TextStyleProps>`
       case 'heading4':
         return typeMap.block;
     }
-    }};
+  }};
+
+  color: ${({ color, theme }) => themeColor(color ?? 'text')(theme)};
 `;
 
 const typeMap = {

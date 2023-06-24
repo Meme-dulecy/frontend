@@ -6,7 +6,9 @@ const colors = {
 export const defaultPalette = {
   main: colors.blue600,
   text: colors.gray900,
-};
+} as const;
+
+export type Palette = typeof defaultPalette;
 
 export default colors;
 

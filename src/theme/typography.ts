@@ -35,6 +35,8 @@ const typography = {
     lineHeight: 1.6,
     fontStyle: 'normal',
   },
-}
+} as const;
+
+export type Typography = typeof typography;
 
 export default typography;
