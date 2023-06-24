@@ -1,7 +1,14 @@
 import { defaultPalette } from './colors';
+import typography from './typography';
 
-const theme = {
+interface Theme {
+  typography: typeof typography;
+  color: Record<string, string>;
+}
+
+const theme: Theme = {
+  typography,
   color: defaultPalette,
-} as const;
+};
 
 export default theme;
