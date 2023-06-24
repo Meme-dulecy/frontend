@@ -8,6 +8,7 @@ export default styled.div`
   height: 24px;
 
   img {
+    width: 100%;
     height: 100%;
   }
 `;

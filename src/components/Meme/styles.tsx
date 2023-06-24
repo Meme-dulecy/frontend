@@ -1,12 +1,19 @@
 import styled, { css } from 'styled-components';
 import { typo, themeColor } from '../../utils/style';
 
-export default styled.div<{ position: Position }>`
+const WIDTH_BY_SIZE: Record<Meme['size'], number> = {
+  S: 80,
+  M: 150,
+  L: 200,
+};
+
+
+export default styled.div<{ position: Position, size: Meme['size'] }>`
   ${typo('body')}
   color: ${themeColor('text')};
   box-shadow: ${({ theme }) => theme.shadow.long};
   border-radius: 4px;
-  width: 128px;
+  width: ${({ size }) => WIDTH_BY_SIZE[size] + 'px'};
   position: absolute;
   ${({ position }) => css`
     top: ${position.x};

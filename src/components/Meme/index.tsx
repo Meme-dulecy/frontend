@@ -10,9 +10,10 @@ interface MemeProps {
   owner: string;
   ownerProfileURL?: string;
   position: Position;
+  size: Meme['size'];
 };
 
-const Meme: React.FC<MemeProps> = ({ imageURL, text, owner, ownerProfileURL, position }) => {
+const Meme: React.FC<MemeProps> = ({ imageURL, text, owner, ownerProfileURL, position, size }) => {
   const meme = useMemo(() => {
     const [hasImage, hasText] = [imageURL != null, text != null];
     if (hasImage) {
@@ -24,7 +25,7 @@ const Meme: React.FC<MemeProps> = ({ imageURL, text, owner, ownerProfileURL, pos
     }
   }, [imageURL, text]);
   return (
-    <Frame position={position}>
+    <Frame position={position} size={size}>
       <MemeFrame>
         {meme}
       </MemeFrame>

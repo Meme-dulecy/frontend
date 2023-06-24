@@ -10,7 +10,7 @@ const MemeList: React.FC<MemeListProps> = ({ memes }) => {
   return (
     <Container>
       {
-        memes.map(({ id, owner, ownerProfileURL, imageURL, text, position }) => 
+        memes.map(({ id, owner, ownerProfileURL, imageURL, text, position, size }) => 
           <Meme
             key={id}
             imageURL={imageURL}
@@ -18,6 +18,7 @@ const MemeList: React.FC<MemeListProps> = ({ memes }) => {
             owner={owner}
             ownerProfileURL={ownerProfileURL}
             position={position}
+            size={size}
           />
         )
       }

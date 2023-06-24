@@ -7,7 +7,7 @@ interface Meme {
   id: string;
   owner: string;
   ownerProfileURL?: string;
-  size: 'mini' | 'medium' | 'large';
+  size: 'S' | 'M' | 'L';
   imageURL?: string;
   text?: string;
   position: Position;
