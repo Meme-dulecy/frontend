@@ -3,6 +3,7 @@ import Text from '../Text';
 import { DEFALUT_IMAGE } from '../../constants';
 import ProfileImage from '../ProfileImage';
 import Frame, { Footer, MemeFrame } from './styles';
+import { randomInt } from '../../utils/math';
 
 interface MemeProps {
   imageURL?: string;
@@ -24,8 +25,10 @@ const Meme: React.FC<MemeProps> = ({ imageURL, text, owner, ownerProfileURL, pos
       return <img src={DEFALUT_IMAGE} alt={text} />;
     }
   }, [imageURL, text]);
+
+  const animationDelay = useMemo(() => randomInt(1000, 0, 100), []);
   return (
-    <Frame position={position} size={size}>
+    <Frame position={position} size={size} delay={animationDelay}>
       <MemeFrame>
         {meme}
       </MemeFrame>
