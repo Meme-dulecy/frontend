@@ -24,7 +24,7 @@ export default styled.span<TextStyleProps>`
     }
   }};
 
-  color: ${({ color, theme }) => themeColor(color ?? 'text')(theme)};
+  color: ${({ color, theme }) => themeColor(color ?? 'text')({ theme })};
 `;
 
 const typeMap = {

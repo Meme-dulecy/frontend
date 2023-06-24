@@ -25,4 +25,5 @@ export const typo = (name: TypographyType) => css`${serializedTypo[name]}`;
 
 export type Color = keyof typeof colors;
 export const color = (name: Color) => colors[name];
-export const themeColor = (name: keyof DefaultTheme['color']) => (theme: DefaultTheme) => theme.color[name];
+type ColorPalette = keyof DefaultTheme['color'];
+export const themeColor = (name: Omit<ColorPalette, 'shadow'>) => ({ theme }: { theme: DefaultTheme }) => theme.color[name as ColorPalette];
