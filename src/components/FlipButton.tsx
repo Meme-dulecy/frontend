@@ -1,12 +1,14 @@
 import { styled } from 'styled-components';
 
-export default function FlipButton() {
-  const handleClick = () => {
-    console.log('click!');
-  };
+type Props = {
+  handleFlipButtonClick: () => void;
+};
 
+export default function FlipButton({ handleFlipButtonClick }: Props) {
   return (
-    <StyledFlipButton onClick={handleClick}>밈카드 뒤집기!</StyledFlipButton>
+    <StyledFlipButton onClick={handleFlipButtonClick}>
+      밈카드 뒤집기!
+    </StyledFlipButton>
   );
 }
 

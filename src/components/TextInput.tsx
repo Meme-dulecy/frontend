@@ -8,7 +8,7 @@ type Props = {
 
 export default function TextInput({ text, handleChange }: Props) {
   return (
-    <StyledImageInput>
+    <StyledImageInput className="text-input">
       <StyledTextarea
         value={text}
         onChange={handleChange}
