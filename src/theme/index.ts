@@ -5,9 +5,9 @@ const theme = {
   typography,
   color: defaultPalette,
   shadow: {
-    short: `2px 0 4px ${colors.gray500}`,
-    medium: `4px 0 4px ${colors.gray500}`,
-    long: `8px 0 6px ${colors.gray500}`,
+    short: `0 2px 4px rgba(0, 0, 0, 0.25)`,
+    medium: `0 4px 4px rgba(0, 0, 0, 0.25)`,
+    long: `0 8px 6px rgba(0, 0, 0, 0.25)`,
   }
 };
 
