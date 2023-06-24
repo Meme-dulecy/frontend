@@ -14,7 +14,7 @@ export default function ImageInput() {
     fileRef!.current!.click();
   };
   return (
-    <StyledImageInput>
+    <StyledImageInput className="image-input">
       <input
         type="file"
         hidden
