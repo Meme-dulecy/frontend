@@ -1,26 +1,27 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
-import ImageInput from './ImageInput';
-import TextInput from './TextInput';
+import React from "react";
+import styled, { css } from "styled-components";
 
 interface Props {
   isImage: boolean;
-  text: string;
-  handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  handleMemeDetailCardClick?: () => void;
+  children: React.ReactNode;
 }
 
-const MemeDetailCard = ({ isImage, text, handleChange }: Props) => {
+const MemeDetailCard = ({
+  isImage,
+  handleMemeDetailCardClick,
+  children,
+}: Props) => {
   return (
-    <StyledInputCard isImage={isImage}>
-      <ImageInput />
-      <TextInput text={text} handleChange={handleChange} />
+    <StyledInputCard isImage={isImage} onClick={handleMemeDetailCardClick}>
+      {children}
     </StyledInputCard>
   );
-}
+};
 
 interface InputCardProps {
   isImage: boolean;
-};
+}
 
 const StyledInputCard = styled.div<InputCardProps>`
   width: 281px;
