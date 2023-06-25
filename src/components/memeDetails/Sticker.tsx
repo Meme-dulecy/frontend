@@ -1,15 +1,26 @@
 import { useState } from "react";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { SelectedStickerState } from "../../pages/MemeDetails";
 
 const Sticker = ({ src }: { src: string }) => {
+  const setSelectedSticker = useSetRecoilState(SelectedStickerState);
+
   const [isDetached, setIsDetached] = useState(false);
 
-  const handleStickerClick = () => {
+  const handleStickerClick = (stickerSource: string) => () => {
+    if (isDetached) return;
+
     setIsDetached((prev) => !prev);
+    setSelectedSticker(stickerSource);
   };
 
   return (
-    <Container src={src} isDetached={isDetached} onClick={handleStickerClick} />
+    <Container
+      src={src}
+      isDetached={isDetached}
+      onClick={handleStickerClick(src)}
+    />
   );
 };
 
