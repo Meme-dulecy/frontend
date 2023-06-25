@@ -7,13 +7,24 @@ import TextInput from "../components/TextInput";
 
 export default function MemeCreation() {
   const [text, setText] = useState("");
-  const [image, setImage] = useState(false);
+  const [image, setImage] = useState<{
+    name: string;
+    file: null | File;
+  }>({
+    name: "",
+    file: null,
+  });
   const [isImage, setIsImage] = useState(true);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length) {
-      setImage(true);
-    }
+    if (!e.target.files || !e.target.files.length) return;
+
+    const file = e.target.files[0];
+
+    setImage({
+      name: file.name,
+      file,
+    });
   };
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -24,6 +35,61 @@ export default function MemeCreation() {
     setIsImage((prev) => !prev);
   };
 
+  const handleMemeCreationButtonClick = async () => {
+    try {
+      // 1. 사진, 텍스트를 받아와 formData 형태로 만들어준다!
+      const formData = new FormData();
+
+      if (image.file !== null) {
+        const blob = new Blob([image.file], { type: "image/*" });
+        formData.append("img", blob);
+      }
+
+      if (text) {
+        formData.append("message", text);
+      }
+
+      // 2. 서버에 POST 요청을 보낸다
+      const response = await fetch("http://18.116.27.58:5000/memes", {
+        method: "POST",
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDk4MzY1MmJiZjNhYTYyNWI0NWU2NTUiLCJpYXQiOjE2ODc3MDQ5ODh9.OrkgWcTdV8WLtVNq6ukEq4mZvcrxV826qbVFtx3Ygsc",
+        },
+        body: formData,
+      });
+      const {
+        result,
+        errMsg,
+        errCode,
+      }: {
+        result?: unknown;
+        errMsg?: string;
+        errCode?: string;
+      } = await response.json();
+
+      if (!result && errMsg) {
+        alert("(서버) 에러 발생!");
+
+        if (errCode === "02-1") {
+          alert("로그인을 다시 시도해주세요!");
+        }
+
+        return;
+      }
+
+      // 3. 성공적으로 생성되었으면
+      alert("밈카드 생성 성공!");
+      // TODO: 메인 페이지로 이동
+    } catch (error) {
+      alert("에러가 발생했습니다..");
+      console.log(error);
+    }
+  };
+
+  const hasImageAttached = Boolean(image.name);
+  const hasText = Boolean(text);
+
   return (
     <Container>
       <MemeDetailCard isImage={isImage}>
@@ -32,7 +98,10 @@ export default function MemeCreation() {
       </MemeDetailCard>
       <FlipButton handleFlipButtonClick={handleFlipButtonClick} />
       <ButtonBackground>
-        <MemeCreationButton disabled={!(text || image)}>
+        <MemeCreationButton
+          disabled={!(hasText || !!hasImageAttached)}
+          onClick={handleMemeCreationButtonClick}
+        >
           밈 생성하기!
         </MemeCreationButton>
       </ButtonBackground>
@@ -81,10 +150,12 @@ const MemeCreationButton = styled.button`
   font-weight: 700;
   line-height: 150%;
   letter-spacing: -0.44px;
+  cursor: pointer;
 
   border: none;
 
   &:disabled {
+    cursor: auto;
     background-color: #a3a3a3;
   }
 `;
