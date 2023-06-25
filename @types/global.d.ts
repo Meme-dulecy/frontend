@@ -10,7 +10,8 @@ interface Meme {
   size: 'S' | 'M' | 'L';
   imageURL?: string;
   text?: string;
-  position: Position;
+  position?: Position;
+  createdTime: number;
   blur: number;
   stickers: Sticker[];
 }

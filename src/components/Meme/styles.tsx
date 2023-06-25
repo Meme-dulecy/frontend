@@ -1,23 +1,18 @@
 import styled, { css } from 'styled-components';
 import { typo, themeColor } from '../../utils/style';
-
-const WIDTH_BY_SIZE: Record<Meme['size'], number> = {
-  S: 80,
-  M: 150,
-  L: 200,
-};
-
+import { MEME_WIDTH_BY_SIZE } from '../../constants';
 
 export default styled.div<{ position: Position, size: Meme['size'], delay: number }>`
   ${typo('body')}
   color: ${themeColor('text')};
   box-shadow: ${({ theme }) => theme.shadow.long};
   border-radius: 4px;
-  width: ${({ size }) => WIDTH_BY_SIZE[size] + 'px'};
+  width: ${({ size }) => MEME_WIDTH_BY_SIZE[size] + 'px'};
   position: absolute;
+  background: #fff;
   ${({ position }) => css`
-    top: ${position.x};
-    left: ${position.y};
+    left: ${position.x}px;
+    bottom: ${position.y}px;
   `}
 
   animation: 6s linear ${({ delay }) => delay + 'ms'} infinite ${({ delay }) => delay % 2 === 0 ? '' : 'reverse'} float;
