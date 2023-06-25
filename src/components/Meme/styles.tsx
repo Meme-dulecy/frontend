@@ -1,21 +1,28 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { typo, themeColor } from '../../utils/style';
 import { MEME_WIDTH_BY_SIZE } from '../../constants';
 
-export default styled.div<{ position: Position, size: Meme['size'], delay: number }>`
+export default styled.div.attrs<{ position: Position, size: Meme['size'] }>(({ size, position }) => ({
+  style: {
+    width: MEME_WIDTH_BY_SIZE[size] + 'px',
+    transform: `translate(${position.x}px, -${position.y}px)`,
+  },
+}))`
   ${typo('body')}
   color: ${themeColor('text')};
-  box-shadow: ${({ theme }) => theme.shadow.long};
   border-radius: 4px;
-  width: ${({ size }) => MEME_WIDTH_BY_SIZE[size] + 'px'};
   position: absolute;
-  background: #fff;
-  ${({ position }) => css`
-    left: ${position.x}px;
-    bottom: ${position.y}px;
-  `}
+  transition: transform 3s linear;
+  bottom: 0;
+`;
 
-  animation: 6s linear ${({ delay }) => delay + 'ms'} infinite ${({ delay }) => delay % 2 === 0 ? '' : 'reverse'} float;
+export const FloatBox = styled.div.attrs<{ delay: number }>(({ delay }) => ({
+  style: {
+    animation: `6s linear ${delay}ms infinite ${delay % 2 === 0 ? '' : 'reverse'} float`
+  },
+}))`
+  background: #fff;
+  box-shadow: ${({ theme }) => theme.shadow.long};
 
   @keyframes float {
     0% {

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import Text from '../Text';
 import { DEFALUT_IMAGE } from '../../constants';
 import ProfileImage from '../ProfileImage';
-import Frame, { Footer, MemeFrame } from './styles';
+import Frame, { FloatBox, Footer, MemeFrame } from './styles';
 import { randomInt } from '../../utils/math';
 
 interface MemeProps {
@@ -28,14 +28,16 @@ const Meme: React.FC<MemeProps> = ({ imageURL, text, owner, ownerProfileURL, pos
 
   const animationDelay = useMemo(() => randomInt(1000, 0, 100), []);
   return (
-    <Frame data-ref="meme" position={position} size={size} delay={animationDelay}>
-      <MemeFrame>
-        {meme}
-      </MemeFrame>
-      <Footer>
-        <ProfileImage imageURL={ownerProfileURL} />
-        <Text size="detail">{owner}</Text>
-      </Footer>
+    <Frame data-ref="meme" position={position} size={size}>
+      <FloatBox delay={animationDelay}>
+        <MemeFrame>
+          {meme}
+        </MemeFrame>
+        <Footer>
+          <ProfileImage imageURL={ownerProfileURL} />
+          <Text size="detail">{owner}</Text>
+        </Footer>
+      </FloatBox>
     </Frame>
   )
 }
