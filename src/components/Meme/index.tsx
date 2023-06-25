@@ -28,7 +28,7 @@ const Meme: React.FC<MemeProps> = ({ imageURL, text, owner, ownerProfileURL, pos
 
   const animationDelay = useMemo(() => randomInt(1000, 0, 100), []);
   return (
-    <Frame position={position} size={size} delay={animationDelay}>
+    <Frame data-ref="meme" position={position} size={size} delay={animationDelay}>
       <MemeFrame>
         {meme}
       </MemeFrame>
