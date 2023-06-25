@@ -18,6 +18,8 @@ const Main: React.FC<MainProps> = (props) => {
 
 export default Main;
 
+const current = new Date().getTime();
+const min = 1000 * 60;
 const dummyMemes: Omit<Meme, 'position'>[] = [
   {
     id: 'asr23ad-123hi3sd-12eddf',
@@ -25,7 +27,7 @@ const dummyMemes: Omit<Meme, 'position'>[] = [
     ownerProfileURL: 'https://dummyimage.com/600x400/000/fff',
     size: 'L',
     imageURL: 'https://dummyimage.com/600x400/000/fff',
-    createdTime: 1687581648833,
+    createdTime: current - min,
     blur: 0,
     stickers: [],
   },
@@ -35,7 +37,7 @@ const dummyMemes: Omit<Meme, 'position'>[] = [
     ownerProfileURL: 'https://dummyimage.com/400x600/000/fff',
     size: 'L',
     imageURL: 'https://dummyimage.com/400x600/000/fff',
-    createdTime: 1687581648833,
+    createdTime: current - 5 * min,
     blur: 0,
     stickers: [],
   },
@@ -45,7 +47,7 @@ const dummyMemes: Omit<Meme, 'position'>[] = [
     ownerProfileURL: 'https://dummyimage.com/600x600/000/fff',
     size: 'M',
     imageURL: 'https://dummyimage.com/600x600/000/fff',
-    createdTime: 1687408848833,
+    createdTime: current - 20 * min,
     blur: 0,
     stickers: [],
   },
@@ -55,7 +57,7 @@ const dummyMemes: Omit<Meme, 'position'>[] = [
     ownerProfileURL: 'https://dummyimage.com/600x400/000/fff',
     size: 'M',
     imageURL: 'https://dummyimage.com/600x400/000/fff',
-    createdTime: 1687322448833,
+    createdTime: current - 30 * min,
     blur: 0,
     stickers: [],
   },
@@ -65,7 +67,7 @@ const dummyMemes: Omit<Meme, 'position'>[] = [
     ownerProfileURL: 'https://dummyimage.com/400x600/000/fff',
     size: 'M',
     imageURL: 'https://dummyimage.com/400x600/000/fff',
-    createdTime: 1687236048833,
+    createdTime: current - 2 * min,
     blur: 0,
     stickers: [],
   },
@@ -75,7 +77,7 @@ const dummyMemes: Omit<Meme, 'position'>[] = [
     ownerProfileURL: 'https://dummyimage.com/600x600/000/fff',
     size: 'S',
     imageURL: 'https://dummyimage.com/600x600/000/fff',
-    createdTime: 1687149648833,
+    createdTime: current - 0 * min,
     blur: 0,
     stickers: [],
   },
@@ -85,7 +87,7 @@ const dummyMemes: Omit<Meme, 'position'>[] = [
     ownerProfileURL: 'https://dummyimage.com/600x400/000/fff',
     size: 'S',
     imageURL: 'https://dummyimage.com/600x400/000/fff',
-    createdTime: 1687063248833,
+    createdTime: current - 15 * min,
     blur: 0,
     stickers: [],
   },
@@ -95,7 +97,7 @@ const dummyMemes: Omit<Meme, 'position'>[] = [
     ownerProfileURL: 'https://dummyimage.com/400x600/000/fff',
     size: 'S',
     imageURL: 'https://dummyimage.com/400x600/000/fff',
-    createdTime: 1686976848833,
+    createdTime: current - 13 * min,
     blur: 0,
     stickers: [],
   },
@@ -105,7 +107,7 @@ const dummyMemes: Omit<Meme, 'position'>[] = [
     ownerProfileURL: 'https://dummyimage.com/600x600/000/fff',
     size: 'S',
     imageURL: 'https://dummyimage.com/600x600/000/fff',
-    createdTime: 1686890448833,
+    createdTime: current - 7 * min,
     blur: 0,
     stickers: [],
   }

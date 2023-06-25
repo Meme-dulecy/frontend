@@ -4,19 +4,19 @@ export const byCreatedTime = (a: Meme, b: Meme) => b.createdTime - a.createdTime
 
 export const formatMemes = (memes: Meme[], memeElements: Element[]) => {
   const memesWithElements = memes.map((meme, i) => ({ ...meme, element: memeElements[i] }));
-  return memesWithElements.sort(byCreatedTime).map((meme, i, memes) => {
+  return memesWithElements.sort(byCreatedTime).map((meme, _, memes) => {
     return {
       ...meme,
-      position: findPosition(meme, i, memes),
+      position: findPosition(meme, memes),
     };
   });
 };
 type MemeWithElement = Meme & { element: Element };
 const SCROLLBAR_WIDTH = 15;
-export const findPosition = (target: MemeWithElement, index: number, memes: MemeWithElement[]): Position => {
+export const findPosition = (target: MemeWithElement, memes: MemeWithElement[]): Position => {
   const viewportWidth = window.innerWidth === document.body.scrollWidth ? window.innerWidth : window.innerWidth - SCROLLBAR_WIDTH;
   const x = arrangeXCoordinate(target.createdTime % viewportWidth, MEME_WIDTH_BY_SIZE[target.size], viewportWidth, memes);
-  const y = arrangeYCoordinate(target, index, memes);
+  const y = arrangeYCoordinate(target);
   return { x, y };
 }
 
@@ -43,12 +43,12 @@ const arrangeXCoordinate = (left: number, width: number, max: number, memes: Mem
   return left;
 };
 
-const SCROLLBAR_HEIGHT = 15;
-const arrangeYCoordinate = (target: MemeWithElement, index:number, memes: MemeWithElement[]) => {
-  if (target.element) {
-    const y = memes.reduce((sum, { element }, i) => i < index ? sum + element.getBoundingClientRect().height : sum, 0);
-    return y < SCROLLBAR_HEIGHT ? SCROLLBAR_HEIGHT : y;
-  }
+const SEC = 1000;
+const PX_PER_UNIT_TIME = 1;
+const arrangeYCoordinate = (target: MemeWithElement) => {
+  const currentTime = new Date().getTime();
+  const yToTime = Math.floor((currentTime - target.createdTime) / SEC) * PX_PER_UNIT_TIME;
+  if (target.element) return yToTime;
   return 0;
 }
 

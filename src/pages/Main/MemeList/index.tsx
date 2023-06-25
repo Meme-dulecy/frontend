@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Container from './styles';
 import Meme from '../../../components/Meme';
 import { formatMemes } from './meta';
@@ -41,12 +41,25 @@ const MemeList: React.FC<MemeListProps> = ({ memes }) => {
     const containerElement = containerRef.current;
     if (!containerElement) return;
     const memeElements = Array.from<Element>(containerElement.querySelectorAll('[data-ref="meme"]'));
-    const totalHeight = memeElements.reduce((sum, element) => sum + element.getBoundingClientRect().height, 0);
-    containerElement.style.setProperty('height', totalHeight + 20 + 'px');
+    const oldestMemeHeight = memeElements.at(-1)?.getBoundingClientRect().height ?? 0;
+    const oldestMemeY = _memes.at(-1)?.position?.y;
+    const containerHeight = oldestMemeY ? oldestMemeY + oldestMemeHeight + 'px' : '100vh';
+    containerElement.style.setProperty('height', containerHeight);
   }, [_memes])
 
+  useEffect(() => {
+    const containerElement = containerRef.current;
+    if (!containerElement) return;
+    const timer = setTimeout(() => {
+      containerElement.classList.remove('init');
+    }, 0);
+    return () => {
+      clearTimeout(timer);
+    }
+  }, [hasRenderedFirst]);
+
   return (
-    <Container ref={containerRef}>
+    <Container ref={containerRef} className="init">
       {
         _memes.map(({ id, owner, ownerProfileURL, imageURL, text, position = { x: 0, y: 0 }, createdTime, size }) => 
           <Meme
