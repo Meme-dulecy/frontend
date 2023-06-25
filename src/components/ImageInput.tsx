@@ -1,13 +1,18 @@
-import { useRef, useState } from 'react';
-import { styled } from 'styled-components';
+import { useRef, useState } from "react";
+import { styled } from "styled-components";
 
-export default function ImageInput() {
-  const [url, setUrl] = useState<string>('');
+interface Props {
+  handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default function ImageInput({ handleImageChange }: Props) {
+  const [url, setUrl] = useState<string>("");
   const fileRef = useRef<HTMLInputElement | null>(null);
 
-  const changeInputMeme = () => {
+  const changeInputMeme = (e: React.ChangeEvent<HTMLInputElement>) => {
     fileRef.current!.files!.length &&
       setUrl(URL.createObjectURL(fileRef.current!.files![0]));
+    handleImageChange(e);
   };
 
   const clickAddingImage = () => {
