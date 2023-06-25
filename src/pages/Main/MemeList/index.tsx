@@ -1,28 +1,24 @@
-import React, { useMemo, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import Container from './styles';
 import Meme from '../../../components/Meme';
-import { findPosition, byCreatedTime } from './meta';
+import { byCreatedTime, formatMemes } from './meta';
 
 interface MemeListProps {
   memes: Meme[];
 }
 
 const MemeList: React.FC<MemeListProps> = ({ memes }) => {
-  const [memeList, setMemeList] = useState(memes.sort(byCreatedTime));
+  const [_memes, setMemes] = useState<Meme[]>([]);
 
-  const formattedMemes = useMemo(() => {
-    return memeList.map((meme, i, memes) => {
-      return {
-        ...meme,
-        position: findPosition(meme, memes),
-      };
-    });
-  }, [memeList]);
+  useLayoutEffect(() => {
+    const newMemes = formatMemes(memes.sort(byCreatedTime));
+    setMemes(newMemes);
+  }, [memes]);
 
   return (
     <Container>
       {
-        formattedMemes.map(({ id, owner, ownerProfileURL, imageURL, text, position, size }) => 
+        _memes.map(({ id, owner, ownerProfileURL, imageURL, text, position = { x: 0, y: 0 }, size }) => 
           <Meme
             key={id}
             imageURL={imageURL}

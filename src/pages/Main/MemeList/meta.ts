@@ -2,6 +2,15 @@ import { MEME_WIDTH_BY_SIZE } from '../../../constants';
 
 export const byCreatedTime = (a: Meme, b: Meme) => b.createdTime - a.createdTime;
 
+export const formatMemes = (memes: Meme[]) => {
+  return memes.map((meme, _, memes) => {
+    return {
+      ...meme,
+      position: findPosition(meme, memes),
+    };
+  });
+};
+
 const SCROLLBAR_WIDTH = 15;
 export const findPosition = (target: Meme, memes: Meme[]): Position => {
   const viewportWidth = window.innerWidth === document.body.scrollWidth ? window.innerWidth : window.innerWidth - SCROLLBAR_WIDTH;
