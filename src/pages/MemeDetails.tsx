@@ -1,16 +1,25 @@
-import { useState, useEffect } from "react";
-import { atom, useRecoilState } from "recoil";
-import styled, { css } from "styled-components";
-import MemeDetailCard from "../components/MemeDetailCard";
-import Stickers from "../components/memeDetails/Stickers";
-import NicknameBadge from "../components/memeDetails/NicknameBadge";
+import { useState, useEffect } from 'react';
+import { atom, useRecoilState } from 'recoil';
+import styled, { css } from 'styled-components';
+import MemeDetailCard from '../components/MemeDetailCard';
+import Stickers from '../components/memeDetails/Stickers';
+import NicknameBadge from '../components/memeDetails/NicknameBadge';
+import useMemeDetail from '../hooks/queries/useMemeDetail';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const SelectedStickerState = atom({
-  key: "SelectedStickerState",
-  default: "",
+  key: 'SelectedStickerState',
+  default: '',
 });
 
 const MemeDetail = () => {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  if (!state?.memeId) {
+    alert('잘못된 접근입니다.');
+    navigate(-1);
+  }
+
   const [selectedSticker, setSelectedSticker] =
     useRecoilState(SelectedStickerState);
 
@@ -32,17 +41,18 @@ const MemeDetail = () => {
       });
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
   const [isImage, setIsImage] = useState<boolean>(true);
-  const imgUrl =
-    "https://w7.pngwing.com/pngs/441/722/png-transparent-pikachu-thumbnail.png";
-  const message = "퇴근 폼 미쳤다 어쩌구... 나는 그냥 ㅣㅁ쳤다...퇴근 폼 미쳤";
+
+  const { imgUrl, message, nickname, profileImg, stickers } = useMemeDetail(
+    state?.memeId
+  );
 
   const handleMemeDetailCardClick = () => {
     if (imgUrl === null || message === null) {
@@ -55,7 +65,7 @@ const MemeDetail = () => {
   return (
     <Container>
       <Whiteboard>
-        <NicknameBadge />
+        <NicknameBadge profileImg={profileImg} nickname={nickname} />
         <MemeDetailCard
           isImage={isImage}
           handleMemeDetailCardClick={handleMemeDetailCardClick}
@@ -64,9 +74,7 @@ const MemeDetail = () => {
             {imgUrl ? (
               <StyledCardImage
                 className="image-input"
-                src={
-                  "https://images.unsplash.com/photo-1687154156757-25b60bb3892d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
-                }
+                src={imgUrl}
                 alt="input-meme"
                 hasImgUrl={!!imgUrl}
                 hasMessage={!!message}
@@ -95,7 +103,7 @@ const MemeDetail = () => {
           src={selectedSticker}
           pos={mousePosition}
           onClick={() => {
-            setSelectedSticker("");
+            setSelectedSticker('');
           }}
         />
       )}
