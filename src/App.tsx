@@ -1,12 +1,14 @@
-import React from 'react';
+import { RecoilRoot } from 'recoil';
 import './App.css';
-import Main from './pages/Main';
+import ServiceRouter from './router';
 
 function App() {
   return (
-    <div className="App">
-      <Main />
-    </div>
+    <RecoilRoot>
+      <div className="App">
+        <ServiceRouter />
+      </div>
+    </RecoilRoot>
   );
 }
 
