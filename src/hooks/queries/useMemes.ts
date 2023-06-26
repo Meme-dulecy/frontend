@@ -1,3 +1,4 @@
+import { MEME_WIDTH_BY_SIZE } from './../../constants/index';
 import { useQuery } from '@tanstack/react-query';
 import QUERY_KEY from '../../constants/query';
 import { socketIO } from '../../components/SockerProvider';
@@ -6,7 +7,14 @@ import { SOCKET_MESSAGE } from '../../constants/socket';
 const useMemes = () => {
   const { data = [], isLoading } = useQuery(QUERY_KEY.MEMES, () => new Promise((res) => socketIO.on(SOCKET_MESSAGE.FETCH_MEMES, (memesRaw: MemeRaw[]) => {
     const memes = (memesRaw ?? []).map<Meme>((meme) => {
-      const size = 'M' || meme.distance;
+      let size: keyof typeof MEME_WIDTH_BY_SIZE;
+      if (meme.distance < 300) {
+        size = 'L'
+      } else if (meme.distance < 1000){
+        size = 'M';
+      } else {
+        size = 'S';
+      }
       return ({
         id: meme.memeId,
         owner: meme.nickname,
