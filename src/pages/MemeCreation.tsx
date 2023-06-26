@@ -40,12 +40,12 @@ export default function MemeCreation() {
   };
 
   const handleMemeCreationButtonClick = async () => {
-    if(token === undefined) {
+    if (token === undefined) {
       alert("로그인을 해주세요!");
       navigate("/");
       return;
     }
-    
+
     try {
       // 1. 사진, 텍스트를 받아와 formData 형태로 만들어준다!
       const formData = new FormData();
@@ -63,8 +63,7 @@ export default function MemeCreation() {
       const response = await fetch("http://18.116.27.58:5000/memes", {
         method: "POST",
         headers: {
-          Authorization:
-            `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: formData,
       });
@@ -113,7 +112,7 @@ export default function MemeCreation() {
       <FlipButton handleFlipButtonClick={handleFlipButtonClick} />
       <ButtonBackground>
         <MemeCreationButton
-          // disabled={!(hasText || !!hasImageAttached)}  
+          // disabled={!(hasText || !!hasImageAttached)}
           disabled={hasImageAttached ? false : true}
           onClick={handleMemeCreationButtonClick}
         >
@@ -126,7 +125,6 @@ export default function MemeCreation() {
 
 const Container = styled.div`
   perspective: 1200px; // for animation
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -145,7 +143,7 @@ const ButtonBackground = styled.div`
   width: 100%;
   height: 84px;
   background-color: #d9d9d9;
-  position: fixed;
+  position: absolute;
   bottom: 0;
 `;
 

@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react';
-import { atom, useRecoilState } from 'recoil';
-import styled, { css } from 'styled-components';
-import MemeDetailCard from '../components/MemeDetailCard';
-import Stickers from '../components/memeDetails/Stickers';
-import NicknameBadge from '../components/memeDetails/NicknameBadge';
-import useMemeDetail from '../hooks/queries/useMemeDetail';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { atom, useRecoilState } from "recoil";
+import styled, { css } from "styled-components";
+import MemeDetailCard from "../components/MemeDetailCard";
+import Stickers from "../components/memeDetails/Stickers";
+import NicknameBadge from "../components/memeDetails/NicknameBadge";
+import useMemeDetail from "../hooks/queries/useMemeDetail";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const SelectedStickerState = atom({
-  key: 'SelectedStickerState',
-  default: '',
+  key: "SelectedStickerState",
+  default: "",
 });
 
 const MemeDetail = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   if (!state?.memeId) {
-    alert('잘못된 접근입니다.');
+    alert("잘못된 접근입니다.");
     navigate(-1);
   }
 
@@ -41,10 +41,10 @@ const MemeDetail = () => {
       });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
@@ -103,7 +103,7 @@ const MemeDetail = () => {
           src={selectedSticker}
           pos={mousePosition}
           onClick={() => {
-            setSelectedSticker('');
+            setSelectedSticker("");
           }}
         />
       )}

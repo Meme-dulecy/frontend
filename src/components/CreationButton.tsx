@@ -1,5 +1,5 @@
-import { styled } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { styled } from "styled-components";
+import { Link } from "react-router-dom";
 
 export default function CreationButton() {
   return (
@@ -13,9 +13,9 @@ export default function CreationButton() {
 }
 
 const StyledCreationButton = styled.img`
-  position: fixed;
+  position: absolute;
   width: 52px;
   height: 52px;
-  bottom: 84px;
-  right: 84px;
+  bottom: 44px;
+  right: 44px;
 `;

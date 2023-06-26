@@ -24,7 +24,7 @@ export const Container = styled.div`
   background: white;
 
   & > svg {
-    position: fixed;
+    position: absolute;
     top: 11px;
     right: 11px;
     font-size: 20px;

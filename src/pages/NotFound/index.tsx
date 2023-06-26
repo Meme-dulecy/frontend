@@ -2,7 +2,7 @@ import * as S from "./styles";
 
 export const NotFound = () => {
   return (
-    <div>
+    <S.Container>
       <S.CodeNumber>"404"</S.CodeNumber>
       <S.NoticeText>
         <span className="green-text">해당 페이지</span>는<br />
@@ -10,6 +10,6 @@ export const NotFound = () => {
         <span className="pink-text">않고</span>
         <br /> 있습니다. <span className="yellow-text">T_T</span>
       </S.NoticeText>
-    </div>
+    </S.Container>
   );
 };
