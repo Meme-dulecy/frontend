@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Container from './styles';
 import Meme from '../../../components/Meme';
 import { formatMemes } from './meta';
-import { useInterval } from 'react-use';
+import { useInterval, useWindowSize } from 'react-use';
 
 interface MemeListProps {
   memes: Meme[];
@@ -12,8 +12,10 @@ const MemeList: React.FC<MemeListProps> = ({ memes }) => {
   const [hasRenderedFirst, setHasRenderedFirst] = useState(false);
   const [_memes, setMemes] = useState<Meme[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { width, height }= useWindowSize();
 
   useInterval(() => {
+    if (_memes.length === 0 || !hasRenderedFirst) return;
     const containerElement = containerRef.current;
     if (!containerElement) return;
     setMemes((prev) => {
@@ -24,8 +26,9 @@ const MemeList: React.FC<MemeListProps> = ({ memes }) => {
       });
     });
   }, 3000);
-
+  
   useLayoutEffect(() => {
+    if (memes.length === 0) return;
     if (!hasRenderedFirst) {
       setHasRenderedFirst(true);
     }
@@ -56,6 +59,7 @@ const MemeList: React.FC<MemeListProps> = ({ memes }) => {
   }, [_memes]);
 
   useEffect(() => {
+    if (_memes.length === 0 || !hasRenderedFirst) return;
     const containerElement = containerRef.current;
     if (!containerElement) return;
     const timer = setTimeout(() => {
@@ -63,33 +67,22 @@ const MemeList: React.FC<MemeListProps> = ({ memes }) => {
     }, 0);
     return () => {
       clearTimeout(timer);
-    };
-  }, [hasRenderedFirst]);
+    }
+  }, [_memes, hasRenderedFirst]);
 
   return (
     <Container ref={containerRef} className="init">
-      {_memes.map(
-        ({
-          id,
-          owner,
-          ownerProfileURL,
-          imageURL,
-          text,
-          position = { x: 0, y: 0 },
-          createdTime,
-          size,
-        }) => (
-          <Meme
-            key={id}
-            imageURL={imageURL}
-            text={text}
-            owner={owner}
-            ownerProfileURL={ownerProfileURL}
-            position={position}
-            size={size}
+      {_memes.map(({ id, owner, ownerProfileURL, imageURL, text, position = { x: 0, y: 0 }, createdTime, size }) => 
+        <Meme
+        key={id}
+        imageURL={imageURL}
+        text={text}
+        owner={owner}
+        ownerProfileURL={ownerProfileURL}
+        position={position}
+        size={size}
             memeId={id}
-          />
-        )
+        />
       )}
     </Container>
   );
