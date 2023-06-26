@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import FlipButton from "../components/FlipButton";
 import MemeDetailCard from "../components/MemeDetailCard";
@@ -15,6 +16,7 @@ export default function MemeCreation() {
     file: null,
   });
   const [isImage, setIsImage] = useState(true);
+  const navigate = useNavigate();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !e.target.files.length) return;
@@ -71,6 +73,10 @@ export default function MemeCreation() {
       if (!result && errMsg) {
         alert("(서버) 에러 발생!");
 
+        if (errCode === "01-1") {
+          alert("유효하지 않은 이미지 입니다!");
+        }
+
         if (errCode === "02-1") {
           alert("로그인을 다시 시도해주세요!");
         }
@@ -80,7 +86,7 @@ export default function MemeCreation() {
 
       // 3. 성공적으로 생성되었으면
       alert("밈카드 생성 성공!");
-      // TODO: 메인 페이지로 이동
+      navigate("/");
     } catch (error) {
       alert("에러가 발생했습니다..");
       console.log(error);
@@ -88,7 +94,7 @@ export default function MemeCreation() {
   };
 
   const hasImageAttached = Boolean(image.name);
-  const hasText = Boolean(text);
+  // const hasText = Boolean(text);
 
   return (
     <Container>
@@ -99,7 +105,8 @@ export default function MemeCreation() {
       <FlipButton handleFlipButtonClick={handleFlipButtonClick} />
       <ButtonBackground>
         <MemeCreationButton
-          disabled={!(hasText || !!hasImageAttached)}
+          // disabled={!(hasText || !!hasImageAttached)}  
+          disabled={hasImageAttached ? false : true}
           onClick={handleMemeCreationButtonClick}
         >
           밈 생성하기!
