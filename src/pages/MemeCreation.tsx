@@ -5,6 +5,7 @@ import FlipButton from "../components/FlipButton";
 import MemeDetailCard from "../components/MemeDetailCard";
 import ImageInput from "../components/ImageInput";
 import TextInput from "../components/TextInput";
+import { getCookie } from "../utils/cookie";
 
 export default function MemeCreation() {
   const [text, setText] = useState("");
@@ -17,6 +18,7 @@ export default function MemeCreation() {
   });
   const [isImage, setIsImage] = useState(true);
   const navigate = useNavigate();
+  const token = getCookie("accessToken");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !e.target.files.length) return;
@@ -38,6 +40,12 @@ export default function MemeCreation() {
   };
 
   const handleMemeCreationButtonClick = async () => {
+    if(token === undefined) {
+      alert("로그인을 해주세요!");
+      navigate("/");
+      return;
+    }
+    
     try {
       // 1. 사진, 텍스트를 받아와 formData 형태로 만들어준다!
       const formData = new FormData();
@@ -56,7 +64,7 @@ export default function MemeCreation() {
         method: "POST",
         headers: {
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDk4MzY1MmJiZjNhYTYyNWI0NWU2NTUiLCJpYXQiOjE2ODc3MDQ5ODh9.OrkgWcTdV8WLtVNq6ukEq4mZvcrxV826qbVFtx3Ygsc",
+            `Bearer ${token}`,
         },
         body: formData,
       });
