@@ -1,15 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ThemeProvider } from 'styled-components';
-import theme from './theme';
-import SocketProvider from './components/SockerProvider';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "styled-components";
+import theme from "./theme";
+import SocketProvider from "./components/SockerProvider";
+import { CookiesProvider } from "react-cookie";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 
 const queryClient = new QueryClient();
@@ -18,9 +19,11 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <SocketProvider>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
+        <CookiesProvider>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </CookiesProvider>
       </SocketProvider>
     </QueryClientProvider>
   </React.StrictMode>
