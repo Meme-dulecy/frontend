@@ -1,14 +1,16 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-const NicknameBadge = () => {
-  const imgUrl =
-    "https://mblogthumb-phinf.pstatic.net/MjAyMTAyMjJfMTk0/MDAxNjEzOTY1NDQ4NDg3.D3CqRDp30AwBlcCLQjdv2n9hQvLnx-wr8SUFskybfI8g.MVWPvsquZ6Lcjtn7gb4_kENapUpcSGmy7NqgqrO6o5Mg.JPEG.letyourselfglow/IMG_3652.JPG?type=w800";
+type Props = {
+  profileImg: string;
+  nickname: string;
+};
 
+const NicknameBadge = ({ profileImg, nickname }: Props) => {
   return (
     <Container>
       <Wrapper>
-        <UserImage src={imgUrl} alt="User Image" />
-        <Nickname>@doodoo doodoo doodoo doodoo</Nickname>
+        <UserImage src={profileImg} alt="User Image" />
+        <Nickname>{nickname}</Nickname>
       </Wrapper>
     </Container>
   );
