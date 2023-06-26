@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Container from './styles';
 import Meme from '../../../components/Meme';
 import { formatMemes } from './meta';
-import { useInterval } from 'react-use';
+import { useInterval, useWindowSize } from 'react-use';
 
 interface MemeListProps {
   memes: Meme[];
@@ -12,6 +12,7 @@ const MemeList: React.FC<MemeListProps> = ({ memes }) => {
   const [hasRenderedFirst, setHasRenderedFirst] = useState(false);
   const [_memes, setMemes] = useState<Meme[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { width, height }= useWindowSize();
 
   useInterval(() => {
     const containerElement = containerRef.current;
@@ -35,7 +36,7 @@ const MemeList: React.FC<MemeListProps> = ({ memes }) => {
     };
     const newMemes = formatMemes(memes, memeElements);
     setMemes(newMemes);
-  }, [memes, hasRenderedFirst]);
+  }, [memes, hasRenderedFirst, width, height]);
 
   useLayoutEffect(() => {
     const containerElement = containerRef.current;
