@@ -1,14 +1,19 @@
 import React from 'react'
 import Layout from './styles';
-import Text from '../../components/Text';
+import MemeList from './MemeList';
+import useMemes from '../../hooks/queries/useMemes';
 
 interface MainProps {
   
 }
 
 const Main: React.FC<MainProps> = (props) => {
-  
-  return (<Layout><Text size="heading1" color='text'>메인화면</Text></Layout>)
+  const { memes } = useMemes();
+  return (
+    <Layout>
+      <MemeList memes={memes} />
+    </Layout>
+  )
 }
 
 export default Main;

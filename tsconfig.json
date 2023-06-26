@@ -22,5 +22,9 @@
   },
   "include": [
     "src/**/*",
-  ]
+    "@types/*"
+  ],
+  "paths": {
+    "types": ["src/*.d.ts", "@types/*.d.ts"]
+  },
 }

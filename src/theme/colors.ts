@@ -1,6 +1,7 @@
 const colors = {
   blue600: '#3E81F6',
   gray900: '#202124',
+  gray500: '#9D9EA2',
 };
 
 export const defaultPalette = {
