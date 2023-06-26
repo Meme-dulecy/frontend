@@ -1,4 +1,4 @@
-import colors, { defaultPalette } from './colors';
+import { defaultPalette } from './colors';
 import typography from './typography';
 
 const theme = {
