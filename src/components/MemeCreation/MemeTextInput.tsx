@@ -1,5 +1,5 @@
-import { ChangeEvent } from 'react';
-import { styled } from 'styled-components';
+import { ChangeEvent } from "react";
+import { styled } from "styled-components";
 
 type Props = {
   text: string;
@@ -8,17 +8,17 @@ type Props = {
 
 export default function TextInput({ text, handleChange }: Props) {
   return (
-    <StyledImageInput className="text-input">
+    <Container className="text-input">
       <StyledTextarea
         value={text}
         onChange={handleChange}
-        placeholder={`텍스트를${'\n'}입력하세요!!!`}
+        placeholder={`텍스트를${"\n"}입력하세요!!!`}
       />
-    </StyledImageInput>
+    </Container>
   );
 }
 
-const StyledImageInput = styled.div`
+const Container = styled.div`
   width: 281px;
   height: 299px;
   display: flex;
