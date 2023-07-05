@@ -1,24 +1,25 @@
-import { ChangeEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import FlipButton from '../components/FlipButton';
-import MemeDetailCard from '../components/MemeDetailCard';
-import ImageInput from '../components/ImageInput';
-import TextInput from '../components/TextInput';
-import { getCookie } from '../utils/cookie';
+import { ChangeEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import FlipButton from "../components/FlipButton";
+import MemeDetailCard from "../components/MemeDetailCard";
+import MemeImageInput from "../components/MemeCreation/MemeImageInput";
+import MemeTextInput from "../components/MemeCreation/MemeTextInput";
+import { getCookie } from "../utils/cookie";
+import createMeme from "../utils/createMeme";
 
 export default function MemeCreation() {
-  const [text, setText] = useState('');
+  const [text, setText] = useState<string>("");
   const [image, setImage] = useState<{
     name: string;
     file: null | File;
   }>({
-    name: '',
+    name: "",
     file: null,
   });
   const [isImage, setIsImage] = useState(true);
   const navigate = useNavigate();
-  const token = getCookie('accessToken');
+  const token = getCookie("accessToken");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !e.target.files.length) return;
@@ -41,66 +42,31 @@ export default function MemeCreation() {
 
   const handleMemeCreationButtonClick = async () => {
     if (token === undefined) {
-      alert('로그인을 해주세요!');
-      navigate('/');
+      alert("로그인을 해주세요!");
+      navigate("/");
       return;
     }
 
-    try {
-      // 1. 사진, 텍스트를 받아와 formData 형태로 만들어준다!
-      const formData = new FormData();
+    const { result, errMsg, errCode } = await createMeme(image, text, token);
 
-      if (image.file !== null) {
-        const blob = new Blob([image.file], { type: 'image/*' });
-        formData.append('img', blob);
+    if (!result && errMsg) {
+      console.error("밈 생성 시 에러 발생", result, errMsg, errCode);
+
+      if (errCode === "01-1") {
+        alert("유효하지 않은 이미지 입니다!");
       }
 
-      if (text) {
-        formData.append('message', text);
+      if (errCode === "02-1") {
+        alert("로그인을 다시 시도해주세요!");
       }
-
-      // 2. 서버에 POST 요청을 보낸다
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URI}/memes`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
-      const {
-        result,
-        errMsg,
-        errCode,
-      }: {
-        result?: unknown;
-        errMsg?: string;
-        errCode?: string;
-      } = await response.json();
-
-      if (!result && errMsg) {
-        alert('(서버) 에러 발생!');
-
-        if (errCode === '01-1') {
-          alert('유효하지 않은 이미지 입니다!');
-        }
-
-        if (errCode === '02-1') {
-          alert('로그인을 다시 시도해주세요!');
-        }
-
-        return;
-      }
-
-      // 3. 성공적으로 생성되었으면
-      alert('밈카드 생성 성공!');
-      navigate('/');
-    } catch (error) {
-      alert('에러가 발생했습니다..');
-      console.log(error);
     }
+
+    if (!result && errCode) {
+      return;
+    }
+
+    alert("밈카드 생성 성공!");
+    navigate("/");
   };
 
   const hasImageAttached = Boolean(image.name);
@@ -109,10 +75,12 @@ export default function MemeCreation() {
   return (
     <Container>
       <MemeDetailCard isImage={isImage}>
-        <ImageInput handleImageChange={handleImageChange} />
-        <TextInput text={text} handleChange={handleChange} />
+        <MemeImageInput handleImageChange={handleImageChange} />
+        <MemeTextInput text={text} handleChange={handleChange} />
       </MemeDetailCard>
+
       <FlipButton handleFlipButtonClick={handleFlipButtonClick} />
+
       <ButtonBackground>
         <MemeCreationButton
           // disabled={!(hasText || !!hasImageAttached)}

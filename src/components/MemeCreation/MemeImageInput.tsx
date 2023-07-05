@@ -6,20 +6,21 @@ interface Props {
 }
 
 export default function ImageInput({ handleImageChange }: Props) {
-  const [url, setUrl] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>("");
   const fileRef = useRef<HTMLInputElement | null>(null);
 
   const changeInputMeme = (e: React.ChangeEvent<HTMLInputElement>) => {
     fileRef.current!.files!.length &&
-      setUrl(URL.createObjectURL(fileRef.current!.files![0]));
+      setImageUrl(URL.createObjectURL(fileRef.current!.files![0]));
     handleImageChange(e);
   };
 
-  const clickAddingImage = () => {
+  const handleFileInputClick = () => {
     fileRef!.current!.click();
   };
+
   return (
-    <StyledImageInput className="image-input">
+    <Container className="image-input">
       <input
         type="file"
         hidden
@@ -27,22 +28,23 @@ export default function ImageInput({ handleImageChange }: Props) {
         accept="image/*"
         onChange={changeInputMeme}
       />
-      {!url ? (
-        <StyledAddingImage onClick={clickAddingImage}>
-          <StyledPlusImage src="/assets/images/plus.png" alt="plus" />
-        </StyledAddingImage>
-      ) : (
-        <StyledInputMeme
-          src={url}
+
+      {imageUrl ? (
+        <AddedImage
+          src={imageUrl}
           alt="input-meme"
-          onClick={clickAddingImage}
+          onClick={handleFileInputClick}
         />
+      ) : (
+        <AddImage onClick={handleFileInputClick}>
+          <PlusButton src="/assets/images/plus.png" alt="plus" />
+        </AddImage>
       )}
-    </StyledImageInput>
+    </Container>
   );
 }
 
-const StyledImageInput = styled.div`
+const Container = styled.div`
   width: 281px;
   height: 299px;
   display: flex;
@@ -52,14 +54,14 @@ const StyledImageInput = styled.div`
   cursor: pointer;
 `;
 
-const StyledAddingImage = styled.div`
+const AddImage = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
   background-color: #d9d9d9;
 `;
 
-const StyledPlusImage = styled.img`
+const PlusButton = styled.img`
   width: 46px;
   height: 46px;
   top: 50%;
@@ -68,7 +70,7 @@ const StyledPlusImage = styled.img`
   transform: translate(-50%, -50%);
 `;
 
-const StyledInputMeme = styled.img`
+const AddedImage = styled.img`
   width: 100%;
   height: auto;
 `;
