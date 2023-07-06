@@ -15,7 +15,7 @@ export default function useMemeDetail(memeId: string) {
   } = useQuery(
     ['memeDetail'],
     async () => {
-      return fetch(`http://18.116.27.58:5000/memes/${memeId}`, {
+      return fetch(`${process.env.REACT_APP_SERVER_URI}/memes/${memeId}`, {
         method: 'GET',
       }).then((res) => res.json());
     },

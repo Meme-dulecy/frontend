@@ -60,13 +60,16 @@ export default function MemeCreation() {
       }
 
       // 2. 서버에 POST 요청을 보낸다
-      const response = await fetch('http://18.116.27.58:5000/memes', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URI}/memes`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
       const {
         result,
         errMsg,
