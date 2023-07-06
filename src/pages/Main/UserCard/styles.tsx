@@ -1,13 +1,13 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div`
-  position: fixed;
-  top: 30px;
-  right: -10px;
+  position: absolute;
+  top: 71px;
+  right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 7px 20px;
+  padding: 5px 10px;
   border-radius: 999px 0 0 999px;
   background-color: #d9d9d980;
   font-size: 15px;
@@ -15,7 +15,7 @@ export const Container = styled.div`
   color: white;
 
   & p {
-    margin-right: 14px;
+    margin-right: 5px;
   }
 
   & svg {

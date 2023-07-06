@@ -1,24 +1,24 @@
-import { ChangeEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import FlipButton from "../components/FlipButton";
-import MemeDetailCard from "../components/MemeDetailCard";
-import ImageInput from "../components/ImageInput";
-import TextInput from "../components/TextInput";
-import { getCookie } from "../utils/cookie";
+import { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import FlipButton from '../components/FlipButton';
+import MemeDetailCard from '../components/MemeDetailCard';
+import ImageInput from '../components/ImageInput';
+import TextInput from '../components/TextInput';
+import { getCookie } from '../utils/cookie';
 
 export default function MemeCreation() {
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const [image, setImage] = useState<{
     name: string;
     file: null | File;
   }>({
-    name: "",
+    name: '',
     file: null,
   });
   const [isImage, setIsImage] = useState(true);
   const navigate = useNavigate();
-  const token = getCookie("accessToken");
+  const token = getCookie('accessToken');
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !e.target.files.length) return;
@@ -40,31 +40,30 @@ export default function MemeCreation() {
   };
 
   const handleMemeCreationButtonClick = async () => {
-    if(token === undefined) {
-      alert("로그인을 해주세요!");
-      navigate("/");
+    if (token === undefined) {
+      alert('로그인을 해주세요!');
+      navigate('/');
       return;
     }
-    
+
     try {
       // 1. 사진, 텍스트를 받아와 formData 형태로 만들어준다!
       const formData = new FormData();
 
       if (image.file !== null) {
-        const blob = new Blob([image.file], { type: "image/*" });
-        formData.append("img", blob);
+        const blob = new Blob([image.file], { type: 'image/*' });
+        formData.append('img', blob);
       }
 
       if (text) {
-        formData.append("message", text);
+        formData.append('message', text);
       }
 
       // 2. 서버에 POST 요청을 보낸다
-      const response = await fetch("http://18.116.27.58:5000/memes", {
-        method: "POST",
+      const response = await fetch('http://18.116.27.58:5000/memes', {
+        method: 'POST',
         headers: {
-          Authorization:
-            `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: formData,
       });
@@ -79,24 +78,24 @@ export default function MemeCreation() {
       } = await response.json();
 
       if (!result && errMsg) {
-        alert("(서버) 에러 발생!");
+        alert('(서버) 에러 발생!');
 
-        if (errCode === "01-1") {
-          alert("유효하지 않은 이미지 입니다!");
+        if (errCode === '01-1') {
+          alert('유효하지 않은 이미지 입니다!');
         }
 
-        if (errCode === "02-1") {
-          alert("로그인을 다시 시도해주세요!");
+        if (errCode === '02-1') {
+          alert('로그인을 다시 시도해주세요!');
         }
 
         return;
       }
 
       // 3. 성공적으로 생성되었으면
-      alert("밈카드 생성 성공!");
-      navigate("/");
+      alert('밈카드 생성 성공!');
+      navigate('/');
     } catch (error) {
-      alert("에러가 발생했습니다..");
+      alert('에러가 발생했습니다..');
       console.log(error);
     }
   };
@@ -113,7 +112,7 @@ export default function MemeCreation() {
       <FlipButton handleFlipButtonClick={handleFlipButtonClick} />
       <ButtonBackground>
         <MemeCreationButton
-          // disabled={!(hasText || !!hasImageAttached)}  
+          // disabled={!(hasText || !!hasImageAttached)}
           disabled={hasImageAttached ? false : true}
           onClick={handleMemeCreationButtonClick}
         >
@@ -134,8 +133,6 @@ const Container = styled.div`
   gap: 48px;
   width: 100%;
   height: 100vh;
-
-  background-color: #faffe4;
 `;
 
 const ButtonBackground = styled.div`
