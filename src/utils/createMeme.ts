@@ -19,13 +19,16 @@ export default async function createMeme(
       formData.append("message", text);
     }
 
-    const response: Response = await fetch("http://18.116.27.58:5000/memes", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
+    const response: Response = await fetch(
+      `${process.env.REACT_APP_SERVER_URI}/memes`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      }
+    );
 
     return response.json() as Promise<{
       result?: unknown;
