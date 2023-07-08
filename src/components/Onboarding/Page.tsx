@@ -27,13 +27,14 @@ const Container = styled.div`
   align-items: center;
   flex-shrink: 0;
   width: 100%;
-  height: 100vh;
   padding: 0 20px;
 `;
 
 const Description = styled.p`
-  margin: 0 0 35px 0;
-  font-size: 24px;
+  margin: 0 0 15px 0;
+  font-size: 22px;
+  line-height: 1.4;
+  white-space: pre-line;
 `;
 
 const Image = styled.div`
@@ -42,7 +43,7 @@ const Image = styled.div`
 
   img {
     width: 100%;
-    height: auto;
+    height: 100%;
   }
 `;
 
