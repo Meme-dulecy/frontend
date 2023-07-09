@@ -14,15 +14,9 @@ const useBottomRef = () => {
 
   const scrollToBottom = () => {
     setTimeout(() => {
-      if (isIntersecting.current) {
-        return;
-      }
-
       bottomRef.current.scrollIntoView({
         block: "end",
       });
-
-      scrollToBottom();
     }, 100);
   };
 
@@ -34,7 +28,7 @@ const useBottomRef = () => {
   }, [bottomRef.current]);
 
   return {
-    isIntersecting,
+    isIntersecting: isIntersecting.current,
     bottomRef: <div ref={bottomRef} />,
   };
 };
