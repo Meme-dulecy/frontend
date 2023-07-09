@@ -3,12 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import QUERY_KEY from "../../constants/query";
 import { socketIO } from "../../components/SockerProvider";
 import { SOCKET_MESSAGE } from "../../constants/socket";
+import { sortBy } from "lodash";
 
 const useMemes = () => {
   const { data = [], isLoading } = useQuery(
     QUERY_KEY.MEMES,
     () =>
-      new Promise((res) =>
+      new Promise((resolve) =>
         socketIO.on(SOCKET_MESSAGE.FETCH_MEMES, (memesRaw: MemeRaw[]) => {
           const memes = (memesRaw ?? []).map<Meme>((meme) => {
             let size: keyof typeof MEME_WIDTH_BY_SIZE;
@@ -35,9 +36,15 @@ const useMemes = () => {
               stickers: meme.stickers,
             };
           });
-          res(memes);
+
+          resolve(memes);
         })
-      )
+      ),
+    {
+      select(data) {
+        return sortBy(data, (meme) => meme.createdTime);
+      },
+    }
   );
 
   return {

@@ -1,55 +1,54 @@
-import React, { useMemo } from 'react';
-import Text from '../Text';
-import { DEFALUT_IMAGE } from '../../constants';
-import ProfileImage from '../ProfileImage';
-import Frame, { FloatBox, Footer, MemeFrame } from './styles';
-import { randomInt } from '../../utils/math';
-import { Link } from 'react-router-dom';
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-interface MemeProps {
-  imageURL?: string;
-  text?: string;
-  owner: string;
-  ownerProfileURL?: string;
-  position: Position;
-  size: Meme['size'];
-  memeId: string;
+import { MemeDesc, MemeWrapper } from "./styles";
+import ProfileImage from "../ProfileImage";
+import { typo } from "../../utils/style";
+
+interface Props {
+  meme: {
+    id: string;
+    imageURL?: string;
+    text?: string;
+    owner: string;
+    ownerProfileURL?: string;
+    // position: Position;
+    size: Meme["size"];
+  };
 }
 
-const Meme: React.FC<MemeProps> = ({
-  imageURL,
-  text,
-  owner,
-  ownerProfileURL,
-  position,
-  size,
-  memeId,
-}) => {
-  const meme = useMemo(() => {
-    const [hasImage, hasText] = [imageURL != null, text != null];
-    if (hasImage) {
-      return <img src={imageURL} alt={text} />;
-    } else if (hasText) {
-      return <Text size="detail">{text}</Text>;
-    } else {
-      return <img src={DEFALUT_IMAGE} alt={text} />;
-    }
-  }, [imageURL, text]);
+const Meme = ({ meme }: Props) => {
+  const { id, size, imageURL, ownerProfileURL, owner } = meme;
 
-  const animationDelay = useMemo(() => randomInt(1000, 0, 100), []);
   return (
-    <Link to={'/detail'} state={{ memeId }}>
-      <Frame data-ref="meme" position={position} size={size}>
-        <FloatBox delay={animationDelay}>
-          <MemeFrame>{meme}</MemeFrame>
-          <Footer>
-            <ProfileImage imageURL={ownerProfileURL} />
-            <Text size="detail">{owner}</Text>
-          </Footer>
-        </FloatBox>
-      </Frame>
+    <Link to={"/detail"} state={{ memeId: id }}>
+      <Container>
+        <MemeWrapper>
+          <img src={imageURL} />
+        </MemeWrapper>
+        <MemeDesc>
+          <ProfileImage imageURL={ownerProfileURL} />
+          <Text>{owner}</Text>
+        </MemeDesc>
+      </Container>
     </Link>
   );
 };
+
+const Container = styled.div`
+  width: 150px;
+  background-color: yellow;
+  border: 2px solid black;
+  border-radius: 4px;
+
+  margin: 0;
+  margin-bottom: 3vh;
+
+  font-size: 10px;
+`;
+
+const Text = styled.div`
+  ${typo("detail")};
+`;
 
 export default Meme;

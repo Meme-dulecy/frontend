@@ -1,13 +1,13 @@
-import { RecoilRoot } from 'recoil';
-import './App.css';
-import ServiceRouter from './router';
+import { RecoilRoot } from "recoil";
+
+import ServiceRouter from "./router";
+import Loading from "./components/Loading";
 
 function App() {
   return (
     <RecoilRoot>
-      <div className="App">
-        <ServiceRouter />
-      </div>
+      <ServiceRouter />
+      {/* <Loading message={"temp"} /> */}
     </RecoilRoot>
   );
 }

@@ -1,91 +1,45 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import Container from './styles';
-import Meme from '../../../components/Meme';
-import { formatMemes } from './meta';
-import { useInterval, useWindowSize } from 'react-use';
+import React from "react";
+import styled from "styled-components";
+
+import Meme from "../../../components/Meme";
+import useBottomRef from "../../../hooks/useBottomRef";
 
 interface MemeListProps {
   memes: Meme[];
 }
 
 const MemeList: React.FC<MemeListProps> = ({ memes }) => {
-  const [hasRenderedFirst, setHasRenderedFirst] = useState(false);
-  const [_memes, setMemes] = useState<Meme[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { width, height }= useWindowSize();
+  const { bottomRef, isIntersecting } = useBottomRef();
 
-  useInterval(() => {
-    if (_memes.length === 0 || !hasRenderedFirst) return;
-    const containerElement = containerRef.current;
-    if (!containerElement) return;
-    setMemes((prev) => {
-      return [...prev].map((meme) => {
-        if (!meme.position) return meme;
-        const { x, y } = meme.position;
-        return { ...meme, position: { x, y: y + 9 } };
-      });
-    });
-  }, 3000);
-  
-  useLayoutEffect(() => {
-    if (memes.length === 0) return;
-    if (!hasRenderedFirst) {
-      setHasRenderedFirst(true);
-    }
-    let memeElements: Element[] = [];
-    const containerElement = containerRef.current;
-    if (containerElement) {
-      memeElements = Array.from<Element>(
-        containerElement.querySelectorAll('[data-ref="meme"]')
-      );
-    }
-    const newMemes = formatMemes(memes, memeElements);
-    setMemes(newMemes);
-  }, [memes, hasRenderedFirst]);
-
-  useLayoutEffect(() => {
-    const containerElement = containerRef.current;
-    if (!containerElement) return;
-    const memeElements = Array.from<Element>(
-      containerElement.querySelectorAll('[data-ref="meme"]')
-    );
-    const oldestMemeHeight =
-      memeElements.at(-1)?.getBoundingClientRect().height ?? 0;
-    const oldestMemeY = _memes.at(-1)?.position?.y;
-    const containerHeight = oldestMemeY
-      ? oldestMemeY + oldestMemeHeight + 'px'
-      : '100vh';
-    containerElement.style.setProperty('height', containerHeight);
-  }, [_memes]);
-
-  useEffect(() => {
-    if (_memes.length === 0 || !hasRenderedFirst) return;
-    const containerElement = containerRef.current;
-    if (!containerElement) return;
-    const timer = setTimeout(() => {
-      containerElement.classList.remove('init');
-    }, 0);
-    return () => {
-      clearTimeout(timer);
-    }
-  }, [_memes, hasRenderedFirst]);
+  if (isIntersecting) {
+    // still show loading spinner
+  }
 
   return (
-    <Container ref={containerRef} className="init">
-      {_memes.map(({ id, owner, ownerProfileURL, imageURL, text, position = { x: 0, y: 0 }, createdTime, size }) => 
-        <Meme
-        key={id}
-        imageURL={imageURL}
-        text={text}
-        owner={owner}
-        ownerProfileURL={ownerProfileURL}
-        position={position}
-        size={size}
-            memeId={id}
-        />
-      )}
+    <Container>
+      {memes.map((meme, index, memes) => {
+        return (
+          <div key={meme.id}>
+            <Meme meme={meme} />
+          </div>
+        );
+      })}
+      {bottomRef}
     </Container>
   );
 };
+
+const Container = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow-y: auto;
+
+  background-color: pink;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 export default MemeList;
