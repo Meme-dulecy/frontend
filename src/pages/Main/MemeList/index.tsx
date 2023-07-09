@@ -1,23 +1,26 @@
-import React from "react";
 import styled from "styled-components";
 
 import Meme from "../../../components/Meme";
+import Loading from "../../../components/Loading";
+import useMemes from "../../../hooks/queries/useMemes";
 import useBottomRef from "../../../hooks/useBottomRef";
 
-interface MemeListProps {
-  memes: Meme[];
-}
+const MemeList = () => {
+  const { memes, isLoading, isFetching } = useMemes();
+  const { bottomRef } = useBottomRef();
 
-const MemeList: React.FC<MemeListProps> = ({ memes }) => {
-  const { bottomRef, isIntersecting } = useBottomRef();
-
-  if (isIntersecting) {
-    // still show loading spinner
+  if (isLoading || isFetching) {
+    return (
+      <>
+        <Loading message="밈 가져오는 중.." />
+        {bottomRef}
+      </>
+    );
   }
 
   return (
     <Container>
-      {memes.map((meme, index, memes) => {
+      {memes.map((meme) => {
         return (
           <div key={meme.id}>
             <Meme meme={meme} />

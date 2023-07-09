@@ -6,7 +6,11 @@ import { SOCKET_MESSAGE } from "../../constants/socket";
 import { sortBy } from "lodash";
 
 const useMemes = () => {
-  const { data = [], isLoading } = useQuery(
+  const {
+    data = [],
+    isLoading,
+    isFetching,
+  } = useQuery(
     QUERY_KEY.MEMES,
     () =>
       new Promise((resolve) =>
@@ -50,6 +54,7 @@ const useMemes = () => {
   return {
     memes: data as Meme[],
     isLoading,
+    isFetching,
   };
 };
 
