@@ -1,17 +1,5 @@
 import * as S from "./styles";
 
-export interface UserInfoType {
-  creator: string;
-  updater: string;
-  createdTs: number;
-  updatedTs: number;
-  profileImg: string;
-  lastLoginTs: number;
-  userId: string;
-  type: string;
-  nickname: string;
-}
-
 export const KakaoLogin = () => {
   const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
   const REDIRECT_URI = process.env.REACT_APP_KAKAO_LOGIN_REDIRECT_URI;

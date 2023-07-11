@@ -1,8 +1,4 @@
-import { useCallback, useEffect } from "react";
 import * as S from "./styles";
-import { getToken } from "../../../api/login";
-
-import { createRandomNickname } from "../../../utils/randomNickname";
 import { atom, useRecoilState } from "recoil";
 import { Modal } from "../../../components/Modal";
 import { createPortal } from "react-dom";
@@ -10,9 +6,12 @@ import { KakaoLogin } from "../../../components/Login";
 import { TbEdit } from "react-icons/tb";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 
-import { getCookie } from "../../../utils/cookie";
-import { getUserInfo } from "../../../api/user";
 import { useNavigate } from "react-router-dom";
+
+import { createRandomNickname } from "../../../utils/randomNickname";
+import { useCallback, useEffect } from "react";
+import { getCookie } from "../../../utils/cookie";
+import useUserInfo from "../../../hooks/queries/useUserInfo";
 
 export const AuthState = atom({
   key: "AuthState",
@@ -24,66 +23,29 @@ export const ModalState = atom({
   default: false,
 });
 
-export const UserInfoState = atom({
-  key: "UserInfoState",
-  default: {
-    creator: "",
-    updater: "",
-    createdTs: 0,
-    updatedTs: 0,
-    profileImg: "",
-    lastLoginTs: 0,
-    userId: "",
-    type: "",
-    nickname: "",
-  },
-});
-
 const UserCard = () => {
+  const token = getCookie("accessToken");
   const navigate = useNavigate();
-  const [isAuth, setIsAuth] = useRecoilState(AuthState);
-  const [userInfo, setUserInfo] = useRecoilState(UserInfoState);
   const [isModalOpen, setIsModalOpen] = useRecoilState(ModalState);
-  let authCode = new URL(window.location.href).searchParams.get("code");
+  const { userInfo, setUserInfo, isLoading, isFetching } = useUserInfo();
 
   useEffect(() => {
     updateRandomUserNickName();
   }, []);
 
-  useEffect(() => {
-    const token = getCookie("accessToken");
-
-    if (!token) {
-      if (authCode) {
-        (async () => {
-          const newToken = await getToken(authCode!);
-          const response = await getUserInfo(newToken);
-
-          setUserInfo(response);
-          setIsAuth(true);
-        })();
-      }
-    } else {
-      (async () => {
-        const response = await getUserInfo(token);
-
-        setUserInfo(response);
-        setIsAuth(true);
-      })();
-    }
-  }, [authCode, setIsAuth, setUserInfo]);
-
-  const updateRandomUserNickName = useCallback(() => {
-    setUserInfo({ ...userInfo, nickname: createRandomNickname() });
-  }, [setUserInfo]);
-
   const handleModalState = () => {
-    if (isAuth) {
+    if (token) {
       navigate("/user");
     } else {
       setIsModalOpen((prev) => !prev);
     }
   };
+
+  const updateRandomUserNickName = useCallback(() => {
+    setUserInfo({ ...userInfo, nickname: createRandomNickname() });
+  }, [setUserInfo, userInfo]);
+
+  if (isLoading && isFetching) return <div>Loading...</div>;
 
   return (
     <>
