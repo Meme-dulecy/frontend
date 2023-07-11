@@ -3,60 +3,63 @@ import { ChangeEvent, useEffect, useState } from "react";
 import * as S from "./styles";
 
 import { createRandomNickname } from "../../utils/randomNickname";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { UserInfoState } from "../../pages/Main/UserCard";
-
 import { MdCancel, MdEdit } from "react-icons/md";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
-import { editUserNickname, getUserInfo } from "../../api/user";
-import { getCookie } from "../../utils/cookie";
+import { editUserNickname } from "../../api/user";
+import useUserInfo from "../../hooks/queries/useUserInfo";
+
+export interface UserInfoType {
+  creator: string;
+  updater: string;
+  createdTs: number;
+  updatedTs: number;
+  profileImg: string;
+  lastLoginTs: number;
+  userId: string;
+  type: string;
+  nickname: string;
+}
 
 const NickNameInput = () => {
-  const userInfo = useRecoilValue(UserInfoState);
-  const setUserInfo = useSetRecoilState(UserInfoState);
-  const [initialNickname, setInitialNickname] = useState<string>(
-    userInfo.nickname
-  );
+  const { userInfo, setUserInfo } = useUserInfo();
+  const [userNickname, setUserNickname] = useState("");
 
   useEffect(() => {
-    const token = getCookie("accessToken");
-    if (userInfo.nickname === "" && token) {
-      (async () => {
-        const response = await getUserInfo(token);
-        setUserInfo(response);
-      })();
-    }
+    resetNickname();
   }, []);
 
   const resetNickname = () => {
-    setUserInfo({ ...userInfo, nickname: initialNickname });
+    setUserNickname(userInfo.nickname);
   };
 
-  const userInputNickName = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserInfo({ ...userInfo, nickname: e.target.value });
+  const userInputNickname = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserNickname(e.target.value);
   };
 
-  const userRandomNickName = () => {
-    setUserInfo({ ...userInfo, nickname: createRandomNickname() });
+  const userRandomNickname = () => {
+    const newNickName = createRandomNickname();
+    setUserNickname(newNickName);
   };
 
   const saveUserNickname = () => {
-    if (initialNickname !== userInfo.nickname)
-      editUserNickname(userInfo.nickname);
+    if (userNickname !== userInfo.nickname) {
+      setUserInfo({ ...userInfo, nickname: userNickname });
+      editUserNickname(userNickname);
+    }
   };
 
   return (
     <S.Container>
       <S.NicknameInputContainer>
         <p>@ </p>
-        <S.Input value={userInfo.nickname} onChange={userInputNickName} />
-        {userInfo.nickname.length > 0 ? (
+        <S.Input value={userNickname} onChange={userInputNickname} />
+        {userNickname.length > 0 ? (
           <MdEdit onClick={saveUserNickname} />
         ) : (
           <MdCancel onClick={resetNickname} />
         )}
       </S.NicknameInputContainer>
-      <S.NicknameGenerator onClick={userRandomNickName}>
+      <S.NicknameGenerator onClick={userRandomNickname}>
         <GiPerspectiveDiceSixFacesRandom />
       </S.NicknameGenerator>
     </S.Container>

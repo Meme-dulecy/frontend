@@ -1,13 +1,16 @@
 import { serviceClient } from ".";
 import { getCookie } from "../utils/cookie";
 
-export const getUserInfo = async (token: string) => {
-  const response = await serviceClient.get("/users", {
+export const getUserInfo = async () => {
+  const token = getCookie("accessToken");
+  return await fetch(`${process.env.REACT_APP_SERVER_URI}/users`, {
+    method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
     },
+  }).then((res) => {
+    return res.json();
   });
-  return response.data.result;
 };
 
 export const editUserNickname = async (newNickName: string) => {
