@@ -19,6 +19,7 @@ const Button = styled.button`
   line-height: 48px;
   color: #ffffff;
   background-color: #ff99f8;
+  cursor: pointer;
 `;
 
 export default StartButton;
