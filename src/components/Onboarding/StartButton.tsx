@@ -9,11 +9,12 @@ function StartButton({ handleStartButtonClick }: StartButtonProps) {
 }
 
 const Button = styled.button`
-  width: 100%;
+  width: calc(100% - 20px);
   height: 48px;
   border: none;
   border-radius: 12px;
-  margin-top: 20px;
+  position: absolute;
+  bottom: 10px;
   font-size: 18px;
   font-weight: 700;
   line-height: 48px;

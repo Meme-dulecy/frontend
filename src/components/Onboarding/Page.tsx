@@ -3,19 +3,15 @@ import styled from "styled-components";
 interface PageProps {
   image: string;
   description: string;
-  button?: JSX.Element;
 }
 
-function Page(props: PageProps) {
-  const { image, description, button } = props;
-
+function Page({ image, description }: PageProps) {
   return (
     <Container>
       <Description>{description}</Description>
       <Image>
         <img src={image} alt="onboarding" />
       </Image>
-      {button !== undefined && button}
     </Container>
   );
 }
