@@ -11,7 +11,6 @@ interface TouchPosition {
 
 function Onboarding() {
   const [pageNumber, setPageNumber] = useState<number>(0);
-  // TODO: 수정하기
   const [className, setClassName] = useState<string>("");
   const [touchPosition, setTouchPosition] = useState<TouchPosition>({
     x: 0,
@@ -72,11 +71,11 @@ function Onboarding() {
         <Page
           image="/assets/images/detail-screen.png"
           description={`밈을 더 자세히 보고 \n 스티커로 공감해 보세요`}
-          button={
-            <StartButton handleStartButtonClick={handleStartButtonClick} />
-          }
         />
       </Pages>
+      {pageNumber === 2 && (
+        <StartButton handleStartButtonClick={handleStartButtonClick} />
+      )}
     </Container>
   );
 }
@@ -85,9 +84,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 35px;
   width: 100%;
-  height: 100vh;
+  height: 100svh;
   background-color: #ffffff;
   position: absolute;
   z-index: 40;
