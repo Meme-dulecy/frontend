@@ -31,6 +31,7 @@ const StyledTextarea = styled.textarea`
   width: 100%;
   height: 100%;
   border: none;
+  border-radius: 0;
   resize: none;
   outline: none;
   color: white;
