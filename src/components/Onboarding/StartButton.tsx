@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 interface StartButtonProps {
-  handleStartButtonClick: () => void;
+  handleClickStartButton: () => void;
 }
 
-function StartButton({ handleStartButtonClick }: StartButtonProps) {
+function StartButton({ handleClickStartButton }: StartButtonProps) {
   return (
     <Background>
-      <Button onClick={handleStartButtonClick}>시작하기</Button>
+      <Button onClick={handleClickStartButton}>시작하기</Button>
     </Background>
   );
 }
