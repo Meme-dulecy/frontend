@@ -103,7 +103,7 @@ const Container = styled.div`
   align-items: center;
   gap: 48px;
   width: 100%;
-  height: 100vh;
+  height: 100svh;
 `;
 
 const ButtonBackground = styled.div`
