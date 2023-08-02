@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Page from "./Page";
 import StartButton from "./StartButton";
@@ -11,11 +11,16 @@ interface TouchPosition {
 
 function Onboarding() {
   const [pageNumber, setPageNumber] = useState<number>(0);
+  const [isLastPage, setIsLastPage] = useState<boolean>(false);
   const [className, setClassName] = useState<string>("");
   const [touchPosition, setTouchPosition] = useState<TouchPosition>({
     x: 0,
     y: 0,
   });
+
+  useEffect(() => {
+    setIsLastPage(pageNumber === 2);
+  }, [pageNumber]);
 
   const handleNextPage = () => {
     if (pageNumber >= 2) return;
@@ -73,7 +78,7 @@ function Onboarding() {
           description={`밈을 더 자세히 보고 \n 스티커로 공감해 보세요`}
         />
       </Pages>
-      {pageNumber === 2 && (
+      {isLastPage && (
         <StartButton handleStartButtonClick={handleStartButtonClick} />
       )}
     </Container>
