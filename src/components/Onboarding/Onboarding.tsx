@@ -27,7 +27,7 @@ function Onboarding() {
     setPageNumber((prev) => prev - 1);
   };
 
-  const handleClickStartButton = () => {
+  const handleStartButtonClick = () => {
     localStorage.setItem("hasOnboarding", "true");
     setClassName("invisible");
   };
@@ -74,7 +74,7 @@ function Onboarding() {
         />
       </Pages>
       {pageNumber === 2 && (
-        <StartButton handleClickStartButton={handleClickStartButton} />
+        <StartButton handleStartButtonClick={handleStartButtonClick} />
       )}
     </Container>
   );
