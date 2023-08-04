@@ -54,7 +54,7 @@ const arrangeXCoordinate = (
 
     const memeRight = position.x + MEME_WIDTH_BY_SIZE[size];
 
-    return left < memeRight || right > position.x;
+    return left < memeRight && right > position.x;
   });
 
   const overRange = right > max;
