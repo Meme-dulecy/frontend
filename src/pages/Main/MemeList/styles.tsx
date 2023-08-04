@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export default styled.div`
   position: relative;
@@ -6,7 +6,8 @@ export default styled.div`
   height: 100vh;
   max-height: 1800px;
   transition: height 3s linear;
-  
+  overflow: hidden;
+
   &.init {
     transition: none;
     [data-ref="meme"] {
