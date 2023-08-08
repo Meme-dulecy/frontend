@@ -49,7 +49,7 @@ const arrangeXCoordinate = (
 ): number => {
   const right = left + width;
 
-  const overlapsOthers = memes.some(({ position, size }) => {
+  const isOverlappedWithOthers = memes.some(({ position, size }) => {
     if (!position) return false;
 
     const memeRight = position.x + MEME_WIDTH_BY_SIZE[size];
@@ -57,13 +57,13 @@ const arrangeXCoordinate = (
     return left < memeRight && right > position.x;
   });
 
-  const overRange = right > max;
-  const needArrage = overlapsOthers || overRange;
+  const isOutOfRange = right > max;
+  const needToArrage = isOverlappedWithOthers || isOutOfRange;
 
-  if (needArrage && retryCount < RETRY_COUNT_LIMIT) {
+  if (needToArrage && retryCount < RETRY_COUNT_LIMIT) {
     const halfLeft = Math.floor(left / 2);
     const jumpSize = halfLeft === 0 ? width : halfLeft;
-    const leftToRetry = overRange ? left + jumpSize : jumpSize;
+    const leftToRetry = isOutOfRange ? left + jumpSize : jumpSize;
 
     return arrangeXCoordinate(leftToRetry, width, max, memes, retryCount + 1);
   }
