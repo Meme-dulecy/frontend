@@ -1,52 +1,19 @@
 import { MEME_WIDTH_BY_SIZE } from "../../../constants";
 
-export const byCreatedTime = (a: Meme, b: Meme) =>
-  b.createdTime - a.createdTime;
-
-export const formatMemes = (
-  memes: Meme[],
-  memeElements: Element[],
-  containerWidth: number
-) => {
-  const memesWithElements = memes.map((meme, i) => ({
-    ...meme,
-    element: memeElements[i],
-  }));
-
-  return memesWithElements.sort(byCreatedTime).map((meme, _, memes) => ({
-    ...meme,
-    position: findPosition(meme, memes, containerWidth),
-  }));
-};
-
-type MemeWithElement = Meme & { element: Element };
-
-export const findPosition = (
-  target: MemeWithElement,
-  memes: MemeWithElement[],
-  containerWidth: number
-): Position => {
-  const x = arrangeXCoordinate(
-    target.createdTime % containerWidth,
-    MEME_WIDTH_BY_SIZE[target.size],
-    containerWidth,
-    memes
-  );
-
-  const y = arrangeYCoordinate(target);
-
-  return { x, y };
+export const getTimeDiffBetweenNowAnd = (createdTime: number) => {
+  return (new Date().getTime() - createdTime) / 1000;
 };
 
 const RETRY_COUNT_LIMIT = 5;
 
-const arrangeXCoordinate = (
+export const getXCoord = (
   left: number,
-  width: number,
-  max: number,
+  containerWidth: number,
+  size: Meme["size"],
   memes: Meme[],
   retryCount = 0
 ): number => {
+  const width = MEME_WIDTH_BY_SIZE[size];
   const right = left + width;
 
   const isOverlappedWithOthers = memes.some(({ position, size }) => {
@@ -57,30 +24,19 @@ const arrangeXCoordinate = (
     return left < memeRight && right > position.x;
   });
 
-  const isOutOfRange = right > max;
+  const isOutOfRange = right > containerWidth;
   const needToArrage = isOverlappedWithOthers || isOutOfRange;
 
   if (needToArrage && retryCount < RETRY_COUNT_LIMIT) {
     const halfLeft = Math.floor(left / 2);
     const jumpSize = halfLeft === 0 ? width : halfLeft;
-    const leftToRetry = isOutOfRange ? left + jumpSize : jumpSize;
+    const leftToRetry =
+      right + jumpSize > containerWidth
+        ? jumpSize
+        : (left + jumpSize) % containerWidth;
 
-    return arrangeXCoordinate(leftToRetry, width, max, memes, retryCount + 1);
+    return getXCoord(leftToRetry, containerWidth, size, memes, retryCount + 1);
   }
 
   return left;
-};
-
-const SEC = 1000;
-const PX_PER_UNIT_TIME = 1;
-
-const arrangeYCoordinate = (target: MemeWithElement) => {
-  const currentTime = new Date().getTime();
-
-  const yToTime =
-    Math.floor((currentTime - target.createdTime) / SEC) * PX_PER_UNIT_TIME;
-
-  if (target.element) return yToTime;
-
-  return 0;
 };
