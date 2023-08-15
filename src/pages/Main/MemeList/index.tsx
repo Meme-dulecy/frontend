@@ -1,80 +1,75 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Container from "./styles";
 import Meme from "../../../components/Meme";
-import { formatMemes } from "./meta";
+import { getTimeDiffBetweenNowAnd, getXCoord } from "./meta";
 import { useInterval } from "react-use";
 
 interface MemeListProps {
-  memes: Meme[];
+  memesTimeLine: Meme[][];
 }
 
-const MemeList: React.FC<MemeListProps> = ({ memes }) => {
-  const [hasRenderedFirst, setHasRenderedFirst] = useState(false);
-  const [_memes, setMemes] = useState<Meme[]>([]);
+const MemeList: React.FC<MemeListProps> = ({ memesTimeLine }) => {
+  const [memes, setMemes] = useState<Meme[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useInterval(() => {
-    if (_memes.length === 0 || !hasRenderedFirst) return;
+    if (!memes.length) return;
 
-    const containerElement = containerRef.current;
-
-    if (!containerElement) return;
-
-    setMemes((prev) =>
-      prev.map((meme) => {
-        if (!meme.position) return meme;
-
-        const { x, y } = meme.position;
-
-        return { ...meme, position: { x, y: y + 9 } };
-      })
+    setMemes(
+      memes.map((meme) => ({
+        ...meme,
+        position: {
+          x: meme.position?.x ?? 0,
+          y:
+            getTimeDiffBetweenNowAnd(meme.createdTime) *
+            getHeightOffsetPerSec(),
+        },
+      }))
     );
-  }, 3000);
-
-  useLayoutEffect(() => {
-    if (memes.length === 0) return;
-
-    if (!hasRenderedFirst) {
-      setHasRenderedFirst(true);
-    }
-
-    let memeElements: Element[] = [];
-
-    const containerElement = containerRef.current;
-
-    if (containerElement) {
-      memeElements = Array.from<Element>(
-        containerElement.querySelectorAll('[data-ref="meme"]')
-      );
-    }
-
-    const containerWidth = containerElement?.getBoundingClientRect()
-      .width as number;
-
-    const newMemes = formatMemes(memes, memeElements, containerWidth);
-
-    setMemes(newMemes);
-  }, [memes, hasRenderedFirst]);
+  }, 1000);
 
   useEffect(() => {
-    if (_memes.length === 0 || !hasRenderedFirst) return;
+    if (!memesTimeLine.length) return;
 
+    setMemes(
+      memesTimeLine.flat().map((meme) => ({
+        ...meme,
+        position: {
+          x:
+            meme.position?.x ??
+            getXCoord(
+              meme.createdTime % getContainerWidth(),
+              getContainerWidth(),
+              meme.size,
+              memes
+            ),
+          y:
+            getTimeDiffBetweenNowAnd(meme.createdTime) *
+            getHeightOffsetPerSec(),
+        },
+      }))
+    );
+  }, [memesTimeLine]);
+
+  const getHeightOffsetPerSec = (): number => {
     const containerElement = containerRef.current;
 
-    if (!containerElement) return;
+    if (!containerElement) return 0;
 
-    const timer = setTimeout(() => {
-      containerElement.classList.remove("init");
-    }, 0);
+    return containerRef.current.clientHeight / (60 * 30);
+  };
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [_memes, hasRenderedFirst]);
+  const getContainerWidth = (): number => {
+    const containerElement = containerRef.current;
+
+    if (!containerElement) return 0;
+
+    return containerRef.current.clientWidth;
+  };
 
   return (
     <Container ref={containerRef} className="init">
-      {_memes.map(
+      {memes?.map(
         ({
           id,
           owner,
