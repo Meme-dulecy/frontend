@@ -9,7 +9,7 @@ import Onboarding from "../../components/Onboarding/Onboarding";
 interface MainProps {}
 
 const Main: React.FC<MainProps> = (props) => {
-  const { memes } = useMemes();
+  const { memesTimeLine } = useMemes();
 
   const getHasOnboarding = localStorage.getItem("hasOnboarding");
   const hasOnboarding = Boolean(getHasOnboarding);
@@ -17,7 +17,7 @@ const Main: React.FC<MainProps> = (props) => {
   return (
     <Layout>
       {!hasOnboarding && <Onboarding />}
-      <MemeList memes={memes} />
+      <MemeList memesTimeLine={memesTimeLine} />
       <UserCard />
       <CreationButton />
     </Layout>
