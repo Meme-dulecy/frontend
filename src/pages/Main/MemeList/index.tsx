@@ -35,14 +35,12 @@ const MemeList: React.FC<MemeListProps> = ({ memesTimeLine }) => {
       memesTimeLine.flat().map((meme) => ({
         ...meme,
         position: {
-          x:
-            meme.position?.x ??
-            getXCoord(
-              meme.createdTime % getContainerWidth(),
-              getContainerWidth(),
-              meme.size,
-              memes
-            ),
+          x: getXCoord(
+            meme.createdTime % getContainerWidth(),
+            getContainerWidth(),
+            meme.size,
+            memesTimeLine.flat()
+          ),
           y:
             getTimeDiffBetweenNowAnd(meme.createdTime) *
             getHeightOffsetPerSec(),
