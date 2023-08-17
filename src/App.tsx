@@ -1,15 +1,23 @@
-import { RecoilRoot } from 'recoil';
-import './App.css';
-import ServiceRouter from './router';
+import styled, { StyleSheetManager } from "styled-components";
+import { RecoilRoot } from "recoil";
+import ServiceRouter from "./router";
 
 function App() {
   return (
     <RecoilRoot>
-      <div className="App">
-        <ServiceRouter />
-      </div>
+      <StyleSheetManager
+        shouldForwardProp={(prop) => !["theme"].includes(prop)}
+      >
+        <Container>
+          <ServiceRouter />
+        </Container>
+      </StyleSheetManager>
     </RecoilRoot>
   );
 }
+
+const Container = styled.div`
+  background-color: #fff;
+`;
 
 export default App;
