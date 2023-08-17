@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import styled from 'styled-components';
+import styled from "styled-components";
 import Sticker from "./Sticker";
 
 const Stickers = () => {
@@ -11,11 +10,11 @@ const Stickers = () => {
       <Sticker src="/assets/stickers/laugh.svg" />
       <Sticker src="/assets/stickers/words.svg" />
     </Container>
-  )
-}
+  );
+};
 
 const Container = styled.div`
-  position: fixed;
+  position: absolute;
   bottom: 0;
   width: 100%;
   height: 91px;
@@ -30,4 +29,4 @@ const Container = styled.div`
   }
 `;
 
-export default Stickers
+export default Stickers;
