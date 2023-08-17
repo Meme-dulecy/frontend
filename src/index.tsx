@@ -1,26 +1,37 @@
-import React from "react";
+import { Suspense } from "react";
 import ReactDOM from "react-dom/client";
+import { ThemeProvider } from "styled-components";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { CookiesProvider } from "react-cookie";
+
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "styled-components";
-import theme from "./theme";
 import SocketProvider from "./components/SockerProvider";
-import { CookiesProvider } from "react-cookie";
+import Loading from "./components/Loading";
+import theme from "./theme";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+      suspense: true,
+    },
+  },
+});
 
 root.render(
   <QueryClientProvider client={queryClient}>
     <SocketProvider>
       <CookiesProvider>
         <ThemeProvider theme={theme}>
-          <App />
+          <Suspense fallback={<Loading />}>
+            <App />
+          </Suspense>
         </ThemeProvider>
       </CookiesProvider>
     </SocketProvider>

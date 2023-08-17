@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 
 export default function useMemeDetail(memeId: string) {
   const {
@@ -12,11 +12,12 @@ export default function useMemeDetail(memeId: string) {
       } = {},
     } = {},
     isLoading,
+    isFetching,
   } = useQuery(
-    ['memeDetail'],
+    ["memeDetail"],
     async () => {
       return fetch(`${process.env.REACT_APP_SERVER_URI}/memes/${memeId}`, {
-        method: 'GET',
+        method: "GET",
       }).then((res) => res.json());
     },
     {
@@ -31,5 +32,6 @@ export default function useMemeDetail(memeId: string) {
     profileImg,
     stickers,
     isLoading,
+    isFetching,
   };
 }
