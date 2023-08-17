@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "./styles";
+import Container from "./styles";
 import MemeList from "./MemeList";
 import useMemes from "../../hooks/queries/useMemes";
 import UserCard from "./UserCard";
@@ -15,12 +15,12 @@ const Main: React.FC<MainProps> = (props) => {
   const hasOnboarding = Boolean(getHasOnboarding);
 
   return (
-    <Layout>
+    <Container>
       {!hasOnboarding && <Onboarding />}
       <MemeList memesTimeLine={memesTimeLine} />
       <UserCard />
       <CreationButton />
-    </Layout>
+    </Container>
   );
 };
 
