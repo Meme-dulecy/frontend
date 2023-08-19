@@ -1,14 +1,13 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-export default styled.div`
-  display: inline-block;
-  border-radius: 50%;
-  overflow: hidden;
-  width: 24px;
-  height: 24px;
+export default styled.div<{ size: number }>`
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
 
   img {
+    display: block;
     width: 100%;
     height: 100%;
+    border-radius: 50%;
   }
 `;
