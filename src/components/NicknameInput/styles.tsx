@@ -23,6 +23,7 @@ export const NicknameInputContainer = styled.div`
 
   & svg {
     font-size: 24px;
+    cursor: pointer;
   }
 `;
 
@@ -45,6 +46,7 @@ export const NicknameGenerator = styled.div`
   height: 48px;
   border: 1px solid #cccccc;
   border-radius: 999px;
+  cursor: pointer;
 
   & svg {
     font-size: 24px;

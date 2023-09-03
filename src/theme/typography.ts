@@ -29,12 +29,23 @@ const typography = {
     lineHeight: 1.6,
     fontStyle: "normal",
   },
-  detail: {
+  detail1: {
     fontSize: 14,
     fontWeight: "bold",
     lineHeight: 1.6,
     fontStyle: "normal",
   },
+  detail2: {
+    fontSize: 12,
+    fontWeight: "bold",
+    lineHeight: 1.6,
+    fontStyle: "normal",
+  },
+  detail3: {
+    fontSize: 10,
+    fontWeight: "bold",
+    lineHeight: 1.6,
+    fontStyle: "normal",
   logo: {
     fontFamily: "Kablammo",
     fontWeight: "bold",

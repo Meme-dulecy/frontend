@@ -5,10 +5,11 @@ export const Container = styled.div`
   height: 100vh;
 
   & > svg {
-    position: fixed;
+    position: absolute;
     top: 20px;
     left: 20px;
     font-size: 24px;
+    cursor: pointer;
   }
 `;
 
@@ -28,4 +29,5 @@ export const Logout = styled.div`
   font-size: 15px;
   font-weight: bold;
   text-align: center;
+  cursor: pointer;
 `;
