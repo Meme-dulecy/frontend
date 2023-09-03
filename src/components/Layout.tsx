@@ -1,5 +1,5 @@
-import { Outlet } from 'react-router-dom';
-import { styled } from 'styled-components';
+import { Outlet } from "react-router-dom";
+import { styled } from "styled-components";
 
 export default function Layout() {
   return (
@@ -21,5 +21,8 @@ const StyledLayout = styled.div`
     width: 100%;
   }
   width: 375px;
-  background-color: #faffe4;
+
+  background-color: #fff;
+  border-left: 1px solid rgba(180, 180, 180, 0.2);
+  border-right: 1px solid rgba(180, 180, 180, 0.2);
 `;

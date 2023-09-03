@@ -1,22 +1,23 @@
-import { useState, useEffect } from 'react';
-import { atom, useRecoilState } from 'recoil';
-import styled, { css } from 'styled-components';
-import MemeDetailCard from '../components/MemeDetailCard';
-import Stickers from '../components/memeDetails/Stickers';
-import NicknameBadge from '../components/memeDetails/NicknameBadge';
-import useMemeDetail from '../hooks/queries/useMemeDetail';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { atom, useRecoilState } from "recoil";
+import styled, { css } from "styled-components";
+import MemeDetailCard from "../components/MemeDetailCard";
+import Stickers from "../components/memeDetails/Stickers";
+import NicknameBadge from "../components/memeDetails/NicknameBadge";
+import useMemeDetail from "../hooks/queries/useMemeDetail";
+import { useLocation, useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
 
 export const SelectedStickerState = atom({
-  key: 'SelectedStickerState',
-  default: '',
+  key: "SelectedStickerState",
+  default: "",
 });
 
 const MemeDetail = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   if (!state?.memeId) {
-    alert('잘못된 접근입니다.');
+    alert("잘못된 접근입니다.");
     navigate(-1);
   }
 
@@ -41,18 +42,17 @@ const MemeDetail = () => {
       });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
   const [isImage, setIsImage] = useState<boolean>(true);
 
-  const { imgUrl, message, nickname, profileImg, stickers } = useMemeDetail(
-    state?.memeId
-  );
+  const { imgUrl, message, nickname, profileImg, stickers, isFetching } =
+    useMemeDetail(state?.memeId);
 
   const handleMemeDetailCardClick = () => {
     if (imgUrl === null || message === null) {
@@ -61,6 +61,8 @@ const MemeDetail = () => {
 
     setIsImage((prev) => !prev);
   };
+
+  if (isFetching) return <Loading />;
 
   return (
     <Container>
@@ -98,12 +100,13 @@ const MemeDetail = () => {
       </Whiteboard>
 
       <Stickers />
+
       {Boolean(selectedSticker) && (
         <SelectedSticker
           src={selectedSticker}
           pos={mousePosition}
           onClick={() => {
-            setSelectedSticker('');
+            setSelectedSticker("");
           }}
         />
       )}
@@ -120,10 +123,12 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
   width: 100%;
   height: 100vh;
 
-  background-color: #faffe4;
+  position: relative;
+  background-color: ${({ theme }) => theme.color.background};
 `;
 
 const Whiteboard = styled.div`

@@ -13,9 +13,9 @@ export default function CreationButton() {
 }
 
 const StyledCreationButton = styled.img`
-  position: fixed;
+  position: absolute;
   width: 52px;
   height: 52px;
-  bottom: 64px;
-  right: 64px;
+  bottom: 5%;
+  right: 10%;
 `;
