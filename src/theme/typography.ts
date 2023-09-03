@@ -46,6 +46,7 @@ const typography = {
     fontWeight: "bold",
     lineHeight: 1.6,
     fontStyle: "normal",
+  },
   logo: {
     fontFamily: "Kablammo",
     fontWeight: "bold",
